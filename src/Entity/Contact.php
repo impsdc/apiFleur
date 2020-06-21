@@ -3,14 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\ContactRepository;
-use ApiPlateform\Core\Annotation\ApiRessource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
+ * @ApiResource
  * @ORM\Entity(repositoryClass=ContactRepository::class)
- * @ApiRessource()
  */
 class Contact
 {

@@ -4,12 +4,12 @@ namespace App\Entity;
 
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlateform\Core\Annotation\ApiRessource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
+ * @ApiResource()
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
- * @ApiRessource
  */
 class Project
 {

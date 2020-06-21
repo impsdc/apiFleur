@@ -5,11 +5,11 @@ namespace App\Entity;
 use App\Repository\ProjectTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlateform\Core\Annotation\ApiRessource;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
+ * @ApiResource
  * @ORM\Entity(repositoryClass=ProjectTypeRepository::class)
- * @ApiRessource()
  */
 class ProjectType
 {
