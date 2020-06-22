@@ -52,7 +52,8 @@ class ContactController extends AbstractController
     {
         $data = $request->getContent();
         $contact = $serializer->deserialize($data, Contact::class, 'json' );
-        
+        $contact->setDate(new \Datetime("NOW"));
+        // $contact->setDate('lol');
         //erreur de validation
         $errors = $validator->validate($contact);
         if(count($errors)){
@@ -61,7 +62,7 @@ class ContactController extends AbstractController
         }
      
         
-        $contact->setDate(new \Datetime("NOW"));
+       
          $em = $this->getDoctrine()->getManager();
          $em->persist($contact);
          $em->flush();

@@ -2,13 +2,24 @@
 
 namespace App\Entity;
 
+use App\Entity\Project;
 use App\Repository\ProjectTypeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+
 use ApiPlatform\Core\Annotation\ApiResource;
+// use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 
 /**
- * @ApiResource
+ * @ApiResource(
+ *          itemOperations={"get"},
+ *          collectionOperations={"get"}, 
+ *          normalizationContext={
+ *              "Groups"={"projectType"}  
+ *          }         
+ * )
  * @ORM\Entity(repositoryClass=ProjectTypeRepository::class)
  */
 class ProjectType
@@ -17,22 +28,26 @@ class ProjectType
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"rojectTypeAll", "projectAll"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"projectTypeAll","projectAll"})
+     * @Groups({"projectType"})
      */
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity=Project::class, mappedBy="type", cascade={"persist", "remove"})
-     * @Groups({"projectTypeAll"})
-     * 
+     * @ORM\OneToMany(targetEntity=Project::class, mappedBy="type")
+     * @Groups({"projectType"})
      */
-    private $project;
+    private $projects;
+
+    public function __construct()
+    {
+        $this->projects = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -51,25 +66,35 @@ class ProjectType
         return $this;
     }
 
-    public function getProject(): ?Project
+    /**
+     * @return Collection|Project[]
+     */
+    public function getProjects(): Collection
     {
-        return $this->project;
+        return $this->projects;
     }
 
-    public function setProject(Project $project): self
+    public function addProject(Project $project): self
     {
-        $this->project = $project;
-
-        // set the owning side of the relation if necessary
-        if ($project->getType() !== $this) {
+        if (!$this->projects->contains($project)) {
+            $this->projects[] = $project;
             $project->setType($this);
         }
 
         return $this;
     }
 
-    public function __toString() : String
+    public function removeProject(Project $project): self
     {
-        return $this->getName();
+        if ($this->projects->contains($project)) {
+            $this->projects->removeElement($project);
+            // set the owning side to null (unless already changed)
+            if ($project->getType() === $this) {
+                $project->setType(null);
+            }
+        }
+
+        return $this;
     }
+
 }

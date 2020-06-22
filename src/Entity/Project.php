@@ -2,13 +2,27 @@
 
 namespace App\Entity;
 
+use App\Entity\ProjectType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
- * @ApiResource()
+  * @ApiResource(
+ *          itemOperations={"get", "put", "delete"},
+ *          collectionOperations={"get", "post" }, 
+ *          attributes={
+ *               "order"={
+*                   "position": "DESC"
+ *              }
+ *          }
+ * )
+ * 
+ * @ApiFilter(SearchFilter::class, properties={"type": "exact"})
+ * 
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
  */
 class Project
@@ -17,38 +31,36 @@ class Project
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"projectTypeAll", "projectAll"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Groups({"projectTypeAll", "projectAll"})
+     * @Groups({"projectType"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"projectTypeAll", "projectAll"})
+     * @Groups({"projectType"})
      */
     private $description;
 
     /**
-     * @ORM\Column(type="float")
-     * @Groups({"projectTypeAll", "projectAll"})
+     * @ORM\Column(type="float", unique=true)
+     * @Groups({"projectType"})
      */
     private $position;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"projectTypeAll", "projectAll"})
+     * @Groups({"projectType"})
      */
     private $media;
 
     /**
-     * @ORM\OneToOne(targetEntity=ProjectType::class, inversedBy="project", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=projectType::class, inversedBy="projects", cascade={"persist"} )
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"projectAll"})
      */
     private $type;
 

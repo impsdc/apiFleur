@@ -6,10 +6,17 @@ use App\Repository\ContactRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+// use ApiPlatform\Core\Bridge\Elasticsearch\DataProvider\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
- * @ApiResource
+ * @ApiResource(
+ *          itemOperations={"get", "delete"},
+ *          collectionOperations={"get", "post" }, 
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"id", "lastName", "email"})
  * @ORM\Entity(repositoryClass=ContactRepository::class)
  */
 class Contact
@@ -18,7 +25,6 @@ class Contact
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"contactAll"})
      */
     private $id;
 
@@ -31,7 +37,6 @@ class Contact
      *      maxMessage = "Your last name cannot be longer than {{ limit }} characters",
      *      allowEmptyString = false
      * )
-     * @Groups({"contactAll"})
      */
     private $lastName;
 
@@ -44,7 +49,6 @@ class Contact
      *      maxMessage = "Your first name cannot be longer than {{ limit }} characters",
      *      allowEmptyString = false
      * )
-     * @Groups({"contactAll"})
      * 
      */
     private $firstName;
@@ -54,7 +58,6 @@ class Contact
      * * @Assert\Email(
      *     message = "The email '{{ value }}' is not a valid email."
      * )
-     * @Groups({"contactAll"})
      */
     private $email;
 
@@ -67,13 +70,12 @@ class Contact
      *      maxMessage = "Your message cannot be longer than {{ limit }} characters",
      *      allowEmptyString = false
      * )
-     * @Groups({"contactAll"})
      */
     private $content;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Groups({"contactAll"})
+     * @ORM\Column(type="datetime", nullable=true)
+     * 
      */
     private $date;
 

@@ -54,6 +54,8 @@ class ProjectController extends AbstractController
         $data = $request->getContent();
 
         // $dataInArray = $serialize->decode($data, 'json');
+        // dump($date);
+        // die;
         // $projectType= $repoProjectType->find(["type"]['id']);
 
         $project = $serializer->deserialize($data, project::class, 'json' );
