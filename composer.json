@@ -15,7 +15,8 @@
         "symfony/http-foundation": "5.1.*",
         "symfony/orm-pack": "^1.0",
         "symfony/serializer": "5.1.*",
-        "symfony/yaml": "5.1.*"
+        "symfony/yaml": "5.1.*",
+        "vich/uploader-bundle": "^1.14"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.19"

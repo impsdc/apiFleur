@@ -13,7 +13,31 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
   * @ApiResource(
  *          itemOperations={"get", "put", "delete"},
- *          collectionOperations={"get", "post" }, 
+ *          collectionOperations={"get", 
+    *          "post"={
+    *             "controller"=CreateMediaObjectAction::class,
+    *             "deserialize"=false,
+    *            
+    *             "openapi_context"={
+    *                 "requestBody"={
+    *                     "content"={
+    *                         "multipart/form-data"={
+    *                             "schema"={
+    *                                 "type"="object",
+    *                                 "properties"={
+    *                                     "file"={
+    *                                         "type"="string",
+    *                                         "format"="binary"
+    *                                     }
+    *                                 }
+    *                             }
+    *                         }
+    *                     }
+    *                 }
+    *             }
+    *         },
+ * 
+ *           }, 
  *          attributes={
  *               "order"={
 *                   "position": "DESC"
@@ -53,10 +77,10 @@ class Project
     private $position;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255) 
      * @Groups({"projectType"})
      */
-    private $media;
+    private $file;
 
     /**
      * @ORM\ManyToOne(targetEntity=projectType::class, inversedBy="projects", cascade={"persist"} )
