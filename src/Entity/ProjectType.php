@@ -8,17 +8,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Annotation\ApiResource;
-// use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
+use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 
 /**
  * @ApiResource(
  *          itemOperations={"get"},
- *          collectionOperations={"get"}, 
- *          normalizationContext={
- *              "Groups"={"projectType"}  
- *          }         
+ *          collectionOperations={"get"},
+ * *   normalizationContext={
+*              "Groups"={"type"}  
+*          }  
+ * )
  * )
  * @ORM\Entity(repositoryClass=ProjectTypeRepository::class)
  */
@@ -33,13 +34,13 @@ class ProjectType
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"projectType"})
      */
     private $name;
 
     /**
+     *  @Groups("projectType")
      * @ORM\OneToMany(targetEntity=Project::class, mappedBy="type")
-     * @Groups({"projectType"})
+     * @ApiSubresource()
      */
     private $projects;
 
