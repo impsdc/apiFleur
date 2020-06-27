@@ -28,7 +28,7 @@ class UserController extends AbstractController
     /**
      * @Route("/register", name="register", methods={"POST"})
      */
-    public function register(UserPasswordEncoderInterface $encoder, Request $request, SerializerInterface $serializer, UserRepository $repo)
+    public function register(UserPasswordEncoderInterface $encoder, Request $request, SerializerInterface $serializer)
     {
         $data = $request->getcontent();
 
