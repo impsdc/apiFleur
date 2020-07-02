@@ -29,7 +29,8 @@ final class CreateMediaObjectAction extends AbstractController
             'type' => $id,
             'position' => $request->get('position')
         ]);
-        if(!is_null($projet)){
+
+        if(is_null($projet)){
             $mediaObject->setType($id);
             $mediaObject->setName($request->get('name'));
             $mediaObject->setDescription($request->get('description'));

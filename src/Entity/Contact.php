@@ -14,7 +14,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 /**
  * @ApiResource(
  *          itemOperations={"get", "delete"},
- *          collectionOperations={"get", "post" }, 
+ *          collectionOperations={"get", "post"}, 
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "lastName", "email"})
  * @ORM\Entity(repositoryClass=ContactRepository::class)

@@ -14,39 +14,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ContactController extends AbstractController
 {
-    /**
-     * @Route("/contact", name="contact_get", methods={"GET"})
-     */
-    public function index(ContactRepository $repo, SerializerInterface $serializer)
-    {
-       $contact = $repo->findAll();
-       $resultat = $serializer->serialize(
-           $contact,
-           'json',
-           [
-               'groups' => ['contactAll']
-           ]
-           );
-        return new JsonResponse($resultat, 200, [], true);
-    }
-
-     /**
-     * @Route("/contact/{id}", name="contact_show", methods={"GET"})
-     */
-    public function show(Contact $contact, ContactRepository $repo, SerializerInterface $serializer)
-    {
-       $resultat = $serializer->serialize(
-           $contact,
-           'json',
-           [
-               'groups' => ['contactAll']
-           ]
-        );
-        return new JsonResponse($resultat, 200, [], true);
-    }
 
     /**
-     * @Route("/contact", name="contact_post", methods={"POST"})
+     * @Route("/contact/post", name="contact_post", methods={"POST"})
      */
     public function create(Request $request, ContactRepository $repo, SerializerInterface $serializer, ValidatorInterface $validator )
     {
@@ -72,38 +42,4 @@ class ContactController extends AbstractController
         ], true);
     }
 
-    /**
-     * @Route("/contact/{id}", name="contact_put", methods={"PUT"})
-     */
-    public function edit(Contact $contact, Request $request, ContactRepository $repo, SerializerInterface $serializer)
-    {
-        $data = $request->getContent();
-     
-        $contact = $serializer->deserialize($data, Contact::class, 'json' );
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($contact);
-        $em->flush();
-
-        return new JsonResponse('Informations has been send modify', 200, [
-            "id" => $contact->getId()
-        ], true);
-    }
-
-    /**
-     * @Route("/contact/{id}", name="contact_delete", methods={"DELETE"})
-     */
-    public function delete(Contact $contact, Request $request, ContactRepository $repo, SerializerInterface $serializer)
-    {
-        // $data = $request->getContent();
-     
-        // $contact = $serializer->deserialize($data, Contact::class, 'json' );
-        $em = $this->getDoctrine()->getManager();
-       
-        $em->remove($contact);
-        $em->flush();
-
-        return new JsonResponse('Informations has been deleted', 200, [
-        
-        ], true);
-    }
 }
